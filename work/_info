@@ -9,11 +9,34 @@ z2
 !i10f 100
 cModel Technology
 Z0 dd:/Voice_Conversion_Project/NPU/cycle_gan_fpga
+vconv1d
+!s110 1761804583
+!i10b 1
+!s100 8>0`8KRClA3b@XHIWVASL2
+Z1 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IT5<9Y=k;Mg^lSebZ3oeWb1
+R0
+w1761802928
+8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\conv1d.v
+Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\conv1d.v
+!i122 1
+L0 12 22
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+Z3 OL;L;2020.4;71
+r1
+!s85 0
+31
+!s108 1761804583.000000
+!s107 d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\.\define.v|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\conv1d.v|
+!s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\conv1d.v|
+!i113 0
+Z4 o-nologo -work work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z5 tCvgOpt 0
 vWallace_PPA_16
 !s110 1761804416
 !i10b 1
 !s100 ]3fL2Pi82EY@aB=d8cJKO2
-!s11b Dg1SIo80bB@j0V0VzS_@n1
+R1
 I5lMU_SNZ5P;0CYFmHlR_H2
 R0
 w1761804108
@@ -21,8 +44,8 @@ w1761804108
 Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\Wallace_PPA_16.v
 !i122 0
 L0 13 35
-VDg1SIo80bB@j0V0VzS_@n1
-OL;L;2020.4;71
+R2
+R3
 r1
 !s85 0
 31
@@ -30,6 +53,6 @@ r1
 !s107 d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\.\define.v|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\Wallace_PPA_16.v|
 !s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\Wallace_PPA_16.v|
 !i113 0
-o-nologo -work work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
-tCvgOpt 0
+R4
+R5
 n@wallace_@p@p@a_16
