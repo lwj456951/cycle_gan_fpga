@@ -1,83 +1,88 @@
 /*** 
  * @Author: jia200151@126.com
- * @Date: 2025-10-29 16:12:26
+ * @Date: 2025-10-30 14:20:29
  * @LastEditors: lwj
- * @LastEditTime: 2025-10-30 17:08:37
+ * @LastEditTime: 2025-10-30 19:34:28
  * @FilePath: \conv1d\Wallace_PPA_16.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
  */
+
 `timescale 1ns/1ps
 `include"./define.v"
 //PPA (Partial Product Compress)
-module Wallace_PPA_16 (
-    input[`WIDTH_DATA*2*8-1:0] PP,//Partial Product(32bits) *8
-    output[`WIDTH_DATA*2-1:0] cout,
-    output[`WIDTH_DATA*2-1:0] sum
-);
-
-reg[`WIDTH_DATA-1:0] PP_reg[0:7];
-integer i;
-always @(*) begin
-    for(i=0;i<8;i=i+1)
-        PP_reg[i] <= PP[(i+1)*`WIDTH_DATA-1-:`WIDTH_DATA];
-end
-
-// wallace tree 4 level 
-reg[`WIDTH_DATA*2-1:0] cout_1_1,cout_1_2,cout_2_1,cout_2_2,cout_3_1,cout_4_1;
-reg[`WIDTH_DATA*2-1:0] sum_1_1,sum_1_2,sum_2_1,sum_2_2,sum_3_1,sum_4_1;
-CSA_3_2  u_1_1 (
-    .a   (PP_reg[0][i]   ),
-    .b   (PP_reg[1][i]    ),
-    .cin (PP_reg[2][i] ),
-
-    .cout(cout_1_1[i]),
-    .sum (sum_1_1[i] )
-);
-
-CSA_3_2  u_1_2 (
-    .a   (PP_reg[3][i]   ),
-    .b   (PP_reg[4][i]    ),
-    .cin (PP_reg[5][i] ),
-
-    .cout(cout_1_2[i]),
-    .sum (sum_1_2[i] )
-);
-
-CSA_3_2  u_2_1 (
-    .a   (cout_1_1[i]   ),
-    .b   (sum_1_1[i]    ),
-    .cin (cout_1_2[i] ),
-
-    .cout(cout_2_1[i]),
-    .sum (sum_2_1[i] )
-);
-
-CSA_3_2  u_2_2 (
-    .a   (sum_1_2[i]   ),
-    .b   (PP_reg[6][i]    ),
-    .cin (PP_reg[7][i] ),
-
-    .cout(cout_2_2[i]),
-    .sum (sum_2_2[i] )
-);
-
-CSA_3_2  u_3_1 (
-    .a   (sum_2_1[i]   ),
-    .b   (cout_2_2[i]    ),
-    .cin (sum_2_2[i] ),
-
-    .cout(cout_3_1[i]),
-    .sum (sum_3_1[i] )
-);
-
-CSA_3_2  u_3_2 (
-    .a   (cout_2_1[i]   ),
-    .b   (cout_3_1[i]    ),
-    .cin (sum_3_1[i] ),
-
-    .cout(cout[i]),
-    .sum (sum[i] )
-);
-
+module Wallace_PPA_16 (input[`WIDTH_DATA*2*8-1:0] PP,  //Partial Product(32bits) *8
+                       output[`WIDTH_DATA*2-1:0] cout,
+                       output[`WIDTH_DATA*2-1:0] sum);
+    //nonsense ,just for compile
+    reg[`WIDTH_DATA-1:0] PP_reg[0:7];
+    integer i;
+    always @(*) begin
+        for(i = 0;i<8;i = i+1)
+            PP_reg[i] <= PP[i*`WIDTH_DATA*2+:`WIDTH_DATA*2];
+    end
+    
+    // wallace tree 4 level
+    reg[`WIDTH_DATA*2-1:0] cout_1_1,cout_1_2,cout_2_1,cout_2_2,cout_3_1,cout_4_1;
+    reg[`WIDTH_DATA*2-1:0] sum_1_1,sum_1_2,sum_2_1,sum_2_2,sum_3_1,sum_4_1;
+    
+    genvar j;
+    generate
+    for(j = 0;j<`WIDTH_DATA*2;j = j+1)begin
+        CSA_3_2  u_1_1 (
+        .a   (PP_reg[0][i]),
+        .b   (PP_reg[1][i]),
+        .cin (PP_reg[2][i]),
+        
+        .cout(cout_1_1[i]),
+        .sum (sum_1_1[i])
+        );
+        
+        CSA_3_2  u_1_2 (
+        .a   (PP_reg[3][i]),
+        .b   (PP_reg[4][i]),
+        .cin (PP_reg[5][i]),
+        
+        .cout(cout_1_2[i]),
+        .sum (sum_1_2[i])
+        );
+        
+        CSA_3_2  u_2_1 (
+        .a   (cout_1_1[i]),
+        .b   (sum_1_1[i]),
+        .cin (cout_1_2[i]),
+        
+        .cout(cout_2_1[i]),
+        .sum (sum_2_1[i])
+        );
+        
+        CSA_3_2  u_2_2 (
+        .a   (sum_1_2[i]),
+        .b   (PP_reg[6][i]),
+        .cin (PP_reg[7][i]),
+        
+        .cout(cout_2_2[i]),
+        .sum (sum_2_2[i])
+        );
+        
+        CSA_3_2  u_3_1 (
+        .a   (sum_2_1[i]),
+        .b   (cout_2_2[i]),
+        .cin (sum_2_2[i]),
+        
+        .cout(cout_3_1[i]),
+        .sum (sum_3_1[i])
+        );
+        
+        CSA_3_2  u_3_2 (
+        .a   (cout_2_1[i]),
+        .b   (cout_3_1[i]),
+        .cin (sum_3_1[i]),
+        
+        .cout(cout[i]),
+        .sum (sum[i])
+        );
+    end
+    endgenerate
+    
 endmodule
