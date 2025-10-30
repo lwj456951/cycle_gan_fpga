@@ -2,8 +2,8 @@
  * @Author: jia200151@126.com
  * @Date: 2025-10-29 16:12:26
  * @LastEditors: lwj
- * @LastEditTime: 2025-10-30 14:01:28
- * @FilePath: \cycle_gan_fpga\rtl\conv1d\Wallace_PPA_16.v
+ * @LastEditTime: 2025-10-30 17:08:37
+ * @FilePath: \conv1d\Wallace_PPA_16.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
  */
@@ -19,29 +19,65 @@ module Wallace_PPA_16 (
 reg[`WIDTH_DATA-1:0] PP_reg[0:7];
 integer i;
 always @(*) begin
-    for(i=0;i<7;i=i+1)
+    for(i=0;i<8;i=i+1)
         PP_reg[i] <= PP[(i+1)*`WIDTH_DATA-1-:`WIDTH_DATA];
 end
-// CSA_3_2 Parameters
 
-// CSA_3_2 Inputs
-reg   a   = 0;
-reg   b   = 0;
-reg   cin = 0;
+// wallace tree 4 level 
+reg[`WIDTH_DATA*2-1:0] cout_1_1,cout_1_2,cout_2_1,cout_2_2,cout_3_1,cout_4_1;
+reg[`WIDTH_DATA*2-1:0] sum_1_1,sum_1_2,sum_2_1,sum_2_2,sum_3_1,sum_4_1;
+CSA_3_2  u_1_1 (
+    .a   (PP_reg[0][i]   ),
+    .b   (PP_reg[1][i]    ),
+    .cin (PP_reg[2][i] ),
 
-// CSA_3_2 Outputs
-
-
-// CSA_3_2 Bidirs
-
-CSA_3_2  u_CSA_3_2 (
-    .a   (a   ),
-    .b   (b   ),
-    .cin (cin ),
-
-    .cout(cout),
-    .sum (sum )
+    .cout(cout_1_1[i]),
+    .sum (sum_1_1[i] )
 );
 
+CSA_3_2  u_1_2 (
+    .a   (PP_reg[3][i]   ),
+    .b   (PP_reg[4][i]    ),
+    .cin (PP_reg[5][i] ),
+
+    .cout(cout_1_2[i]),
+    .sum (sum_1_2[i] )
+);
+
+CSA_3_2  u_2_1 (
+    .a   (cout_1_1[i]   ),
+    .b   (sum_1_1[i]    ),
+    .cin (cout_1_2[i] ),
+
+    .cout(cout_2_1[i]),
+    .sum (sum_2_1[i] )
+);
+
+CSA_3_2  u_2_2 (
+    .a   (sum_1_2[i]   ),
+    .b   (PP_reg[6][i]    ),
+    .cin (PP_reg[7][i] ),
+
+    .cout(cout_2_2[i]),
+    .sum (sum_2_2[i] )
+);
+
+CSA_3_2  u_3_1 (
+    .a   (sum_2_1[i]   ),
+    .b   (cout_2_2[i]    ),
+    .cin (sum_2_2[i] ),
+
+    .cout(cout_3_1[i]),
+    .sum (sum_3_1[i] )
+);
+
+CSA_3_2  u_3_2 (
+    .a   (cout_2_1[i]   ),
+    .b   (cout_3_1[i]    ),
+    .cin (sum_3_1[i] ),
+
+    .cout(cout[i]),
+    .sum (sum[i] )
+);
 
 endmodule
