@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2025-10-30 19:11:35
  * @LastEditors: lwj
- * @LastEditTime: 2025-10-31 13:15:53
+ * @LastEditTime: 2025-11-03 20:04:30
  * @FilePath: \conv1d\MAC.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -37,8 +37,9 @@ module MAC (input[`WIDTH_DATA-1:0] weight,
     .PP     (PP)
     );
     wire [`WIDTH_DATA*2-1:0]                   PPA_cout;
+    wire [`WIDTH_DATA*2-1:0]                   PPA_cout_r;
     wire [`WIDTH_DATA*2-1:0]                   PPA_sum ;
-    
+    assign PPA_cout_r = PPA_cout << 1;
     // Wallace_PPA_16 Bidirs
     
     Wallace_PPA_16  u_Wallace_PPA_16 (
@@ -57,25 +58,17 @@ module MAC (input[`WIDTH_DATA-1:0] weight,
     generate
         for(i = 0;i<`WIDTH_DATA*2;i= i+1)begin
             CSA_3_2  u_CSA (
-                .a   (PPA_cout[i]),
+                .a   (PPA_cout_r[i]),
                 .b   (PPA_sum[i]),
                 .cin (psum_in[i]),
                 
                 .cout(adder_cout[i]),
                 .sum (adder_sum[i])
-                );
-                
-                // CSA_3_2 Bidirs
-                
-                CSA_3_2  u_CSA_adder (
-                .a   (adder_cout[i]),
-                .b   (adder_sum[i]),
-                .cin (1'd0),
-                
-                .cout(),
-                .sum (psum_out[i])
-                );
+                );          
+               
         end
     endgenerate
     
+
+    assign psum_out = (adder_cout << 1) + adder_sum;
 endmodule

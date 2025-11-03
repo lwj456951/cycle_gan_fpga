@@ -123,23 +123,23 @@ R14
 R2
 n@booth_@encoder
 vBooth_Wallace_Multipiler
-!s110 1762170456
+!s110 1762170745
 !i10b 1
 !s100 KFEGjejCU6N1YG^hYfHIk0
 R5
 If=V^bagL:0DL?zi1m`?jc0
 R0
-w1762170456
+w1762170745
 8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\Booth_Wallace_Multiplier.v
 Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\Booth_Wallace_Multiplier.v
-!i122 270
+!i122 280
 L0 12 32
 R9
 R10
 r1
 !s85 0
 31
-!s108 1762170456.000000
+!s108 1762170745.000000
 !s107 ./define.v|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\Booth_Wallace_Multiplier.v|
 !s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\Booth_Wallace_Multiplier.v|
 !i113 0
@@ -147,27 +147,27 @@ R14
 R2
 n@booth_@wallace_@multipiler
 vconv1d
-!s110 1762134730
+!s110 1762170521
 !i10b 1
 !s100 8>0`8KRClA3b@XHIWVASL2
 R5
-IbX:<SRMlTo5fBooB1gRz;0
-dD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/conv1d
+IT5<9Y=k;Mg^lSebZ3oeWb1
+R0
 w1761802928
-8conv1d.v
-Fconv1d.v
-!i122 235
+8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\conv1d.v
+Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\conv1d.v
+!i122 271
 L0 12 22
 R9
 R10
 r1
 !s85 0
 31
-!s108 1762134730.000000
-!s107 ./define.v|Wallace_PPA_16.v|MAC.v|define.v|CSA_3_2.v|conv1d.v|Booth_Wallace_Multiplier.v|Booth_Encoder.v|
-!s90 Booth_Encoder.v|Booth_Wallace_Multiplier.v|conv1d.v|CSA_3_2.v|define.v|MAC.v|Wallace_PPA_16.v|
+!s108 1762170520.000000
+!s107 ./define.v|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\conv1d.v|
+!s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\conv1d.v|
 !i113 0
-o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R14
 R2
 vCSA_3_2
 !s110 1762168539
@@ -194,23 +194,23 @@ R14
 R2
 n@c@s@a_3_2
 vMAC
-!s110 1762168730
+!s110 1762171471
 !i10b 1
-!s100 []EOM:^NYS]J0AfZTHBnb2
+!s100 RT2S0^BHzhbl=?QLBO6>T3
 R5
-Im^1c:]e7l=P1GddKcl9MS1
+I[B=aUF_`Gg1M=UlNWRc8R0
 R0
-w1761887789
+w1762171470
 8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\MAC.v
 Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\MAC.v
-!i122 252
-L0 22 60
+!i122 292
+L0 22 53
 R9
 R10
 r1
 !s85 0
 31
-!s108 1762168730.000000
+!s108 1762171471.000000
 !s107 ./define.v|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\MAC.v|
 !s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\MAC.v|
 !i113 0
@@ -241,6 +241,30 @@ r1
 R14
 R2
 ntb_@booth_@wallace_@multipiler
+vtb_MAC
+!s110 1762171592
+!i10b 1
+!s100 ChEio>8ZZCOHaWQLS[@;O3
+R5
+IbdK<Nn6^NJK[o_MnO1m_d2
+R0
+w1762171592
+8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\tb\MAC_tb.v
+Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\tb\MAC_tb.v
+!i122 294
+L0 13 52
+R9
+R10
+r1
+!s85 0
+31
+!s108 1762171592.000000
+!s107 d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\tb\..\define.v|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\tb\MAC_tb.v|
+!s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\conv1d\tb\MAC_tb.v|
+!i113 0
+R14
+R2
+ntb_@m@a@c
 vWallace_PPA_16
 !s110 1762168715
 !i10b 1
