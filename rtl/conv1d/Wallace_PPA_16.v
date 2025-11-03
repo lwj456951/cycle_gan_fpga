@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2025-10-30 14:20:29
  * @LastEditors: lwj
- * @LastEditTime: 2025-10-31 13:12:32
+ * @LastEditTime: 2025-11-03 19:17:55
  * @FilePath: \conv1d\Wallace_PPA_16.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -24,8 +24,14 @@ module Wallace_PPA_16 (input[`WIDTH_DATA*2*8-1:0] PP,  //Partial Product(32bits)
     
     // wallace tree 4 level
     wire[`WIDTH_DATA*2-1:0] cout_1_1,cout_1_2,cout_2_1,cout_2_2,cout_3_1,cout_4_1;
+    wire[`WIDTH_DATA*2-1:0] cout_1_1_r,cout_1_2_r,cout_2_1_r,cout_2_2_r,cout_3_1_r,cout_4_1_r;
     wire[`WIDTH_DATA*2-1:0] sum_1_1,sum_1_2,sum_2_1,sum_2_2,sum_3_1,sum_4_1;
-    
+    assign cout_1_1_r = cout_1_1 <<1;
+    assign cout_1_2_r = cout_1_2 <<1;
+    assign cout_2_1_r = cout_2_1 <<1;
+    assign cout_2_2_r = cout_2_2 <<1;
+    assign cout_3_1_r = cout_3_1 <<1;
+    assign cout_4_1_r = cout_4_1 <<1;
     genvar i;
     generate
     for(i = 0;i<`WIDTH_DATA*2;i= i+1)begin
@@ -48,16 +54,16 @@ module Wallace_PPA_16 (input[`WIDTH_DATA*2*8-1:0] PP,  //Partial Product(32bits)
         );
         
         CSA_3_2  u_2_1 (
-        .a   (cout_1_1[i]),
+        .a   (cout_1_1_r[i]),
         .b   (sum_1_1[i]),
-        .cin (cout_1_2[i]),
+        .cin (sum_1_2[i]),
         
         .cout(cout_2_1[i]),
         .sum (sum_2_1[i])
         );
         
         CSA_3_2  u_2_2 (
-        .a   (sum_1_2[i]),
+        .a   (cout_1_2_r[i]),
         .b   (PP_reg[6][i]),
         .cin (PP_reg[7][i]),
         
@@ -67,16 +73,16 @@ module Wallace_PPA_16 (input[`WIDTH_DATA*2*8-1:0] PP,  //Partial Product(32bits)
         
         CSA_3_2  u_3_1 (
         .a   (sum_2_1[i]),
-        .b   (cout_2_2[i]),
+        .b   (cout_2_1_r[i]),
         .cin (sum_2_2[i]),
         
         .cout(cout_3_1[i]),
         .sum (sum_3_1[i])
         );
         
-        CSA_3_2  u_3_2 (
-        .a   (cout_2_1[i]),
-        .b   (cout_3_1[i]),
+        CSA_3_2  u_4_1 (
+        .a   (cout_2_2_r[i]),
+        .b   (cout_3_1_r[i]),
         .cin (sum_3_1[i]),
         
         .cout(cout[i]),

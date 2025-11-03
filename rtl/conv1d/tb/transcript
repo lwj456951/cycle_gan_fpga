@@ -11,10 +11,15 @@
 # //  is prohibited from disclosure under the Trade Secrets Act,
 # //  18 U.S.C. Section 1905.
 # //
-# vsim *.v 
-# Start time: 09:51:53 on Nov 03,2025
-# ** Error (suppressible): (vsim-19) Failed to access library '*' at "*".
-# Invalid argument. (errno = EINVAL)
+# OpenFile mult_tb.v
+# Optimization canceled
+vsim -voptargs=+acc work.tb_Booth_Wallace_Multipiler
+# vsim -voptargs="+acc" work.tb_Booth_Wallace_Multipiler 
+# Start time: 09:54:26 on Nov 03,2025
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Error: mult_tb.v(48): Module 'Booth_Wallace_Multipiler' is not defined.
+# Optimization failed
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=1, Warnings=0.
 # Error loading design
-# End time: 09:51:53 on Nov 03,2025, Elapsed time: 0:00:00
+# End time: 09:54:26 on Nov 03,2025, Elapsed time: 0:00:00
 # Errors: 1, Warnings: 0
