@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2025-10-31 10:53:48
  * @LastEditors: lwj
- * @LastEditTime: 2025-10-31 13:16:36
+ * @LastEditTime: 2025-11-03 19:46:04
  * @FilePath: \conv1d\Booth_Wallace_Multiplier.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -27,7 +27,8 @@ Booth_Encoder  u_Booth_Encoder (
 );
 wire [`WIDTH_DATA*2-1:0]                   PPA_cout;
 wire [`WIDTH_DATA*2-1:0]                   PPA_sum ;
-
+wire [`WIDTH_DATA*2-1:0]                   PPA_cout_r;
+assign PPA_cout_r = PPA_cout << 1;
 // Wallace_PPA_16 Bidirs
 
 Wallace_PPA_16  u_Wallace_PPA_16 (
@@ -36,19 +37,7 @@ Wallace_PPA_16  u_Wallace_PPA_16 (
 .cout(PPA_cout),
 .sum (PPA_sum)
 );
-// CSA_3_2 Bidirs
-genvar i;
-generate
-    for(i = 0;i<`WIDTH_DATA*2;i= i+1)begin
-        CSA_3_2  u_CSA_adder (
-            .a   (PPA_cout[i]),
-            .b   (PPA_sum[i]),
-            .cin (1'd0),
-
-            .cout(),
-            .sum (result_out[i])
-            );
-    end
-endgenerate
+// adder
+assign result_out = PPA_cout_r + PPA_sum;
 
 endmodule
