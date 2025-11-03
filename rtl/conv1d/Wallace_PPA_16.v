@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2025-10-30 14:20:29
  * @LastEditors: lwj
- * @LastEditTime: 2025-10-30 19:34:28
+ * @LastEditTime: 2025-10-31 13:12:32
  * @FilePath: \conv1d\Wallace_PPA_16.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -15,20 +15,20 @@ module Wallace_PPA_16 (input[`WIDTH_DATA*2*8-1:0] PP,  //Partial Product(32bits)
                        output[`WIDTH_DATA*2-1:0] cout,
                        output[`WIDTH_DATA*2-1:0] sum);
     //nonsense ,just for compile
-    reg[`WIDTH_DATA-1:0] PP_reg[0:7];
-    integer i;
+    reg[`WIDTH_DATA*2-1:0] PP_reg[0:7];
+    integer j;
     always @(*) begin
-        for(i = 0;i<8;i = i+1)
-            PP_reg[i] <= PP[i*`WIDTH_DATA*2+:`WIDTH_DATA*2];
+        for(j = 0;j<8;j = j+1)
+            PP_reg[j] <= PP[j*`WIDTH_DATA*2+:`WIDTH_DATA*2];
     end
     
     // wallace tree 4 level
-    reg[`WIDTH_DATA*2-1:0] cout_1_1,cout_1_2,cout_2_1,cout_2_2,cout_3_1,cout_4_1;
-    reg[`WIDTH_DATA*2-1:0] sum_1_1,sum_1_2,sum_2_1,sum_2_2,sum_3_1,sum_4_1;
+    wire[`WIDTH_DATA*2-1:0] cout_1_1,cout_1_2,cout_2_1,cout_2_2,cout_3_1,cout_4_1;
+    wire[`WIDTH_DATA*2-1:0] sum_1_1,sum_1_2,sum_2_1,sum_2_2,sum_3_1,sum_4_1;
     
-    genvar j;
+    genvar i;
     generate
-    for(j = 0;j<`WIDTH_DATA*2;j = j+1)begin
+    for(i = 0;i<`WIDTH_DATA*2;i= i+1)begin
         CSA_3_2  u_1_1 (
         .a   (PP_reg[0][i]),
         .b   (PP_reg[1][i]),
