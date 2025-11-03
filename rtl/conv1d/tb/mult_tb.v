@@ -1,0 +1,61 @@
+/*** 
+ * @Author: jia200151@126.com
+ * @Date: 2025-10-31 10:55:31
+ * @LastEditors: lwj
+ * @LastEditTime: 2025-10-31 16:37:48
+ * @FilePath: \conv1d\tb\mult_tb.v
+ * @Description:  
+ * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
+ */
+//~ `New testbench
+`timescale  1ns / 1ps
+`include"../define.v"
+module tb_Booth_Wallace_Multipiler;
+
+// Booth_Wallace_Multipiler Parameters
+parameter PERIOD = 10;
+
+// Booth_Wallace_Multipiler Inputs
+reg   [`WIDTH_DATA-1:0] weight;
+reg  [`WIDTH_DATA-1:0] feature;
+reg clk,rst_n;
+// Booth_Wallace_Multipiler Outputs
+wire [`WIDTH_DATA*2-1:0]                   result_out;
+
+// Booth_Wallace_Multipiler Bidirs
+
+initial
+begin
+    forever #(PERIOD/2)  clk=~clk;
+end
+
+initial
+begin
+	clk=0;
+	rst_n=0;
+    #(PERIOD*2) rst_n  =  1;
+end
+integer i;
+initial begin
+    i=1;
+    forever begin
+        @(posedge clk);
+        weight = 9;
+        feature = 7;
+        $display("~feature+1:%b",(~{{`WIDTH_DATA{feature[`WIDTH_DATA-1]}},feature}+1)<<(2*i+1));
+    end
+end
+Booth_Wallace_Multipiler  u_Booth_Wallace_Multipiler (
+    .weight    (weight    ),
+    .feature   (feature   ),
+
+    .result_out(result_out)
+);
+
+initial
+begin
+    #100000;
+    $finish;
+end
+
+endmodule
