@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2025-10-30 19:11:35
  * @LastEditors: lwj
- * @LastEditTime: 2025-11-03 20:04:30
+ * @LastEditTime: 2025-11-04 16:27:33
  * @FilePath: \conv1d\MAC.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -50,8 +50,8 @@ module MAC (input[`WIDTH_DATA-1:0] weight,
     );
     // CSA_3_2 Bidirs 
     //compresion psum_in + PPA_cout + PPA_sum
-    wire [`WIDTH_DATA*2-1:0]                   adder_cout;
-    wire [`WIDTH_DATA*2-1:0]                   adder_sum ;
+    wire signed[`WIDTH_DATA*2-1:0]                   adder_cout;
+    wire signed[`WIDTH_DATA*2-1:0]                   adder_sum ;
 
 
     genvar i;
