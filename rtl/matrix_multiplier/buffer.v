@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2025-11-10 15:36:00
  * @LastEditors: lwj
- * @LastEditTime: 2025-11-10 18:24:55
+ * @LastEditTime: 2025-11-11 16:47:13
  * @FilePath: \rtl\matrix_multiplier\buffer.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -30,5 +30,5 @@ always @(posedge clk or negedge rst_n) begin
             d_reg[i] <= d_reg[i-1]; 
     end
 end
-
+assign dout = d_reg[LENGTH-1];
 endmodule
