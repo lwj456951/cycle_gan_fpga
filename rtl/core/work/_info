@@ -1,0 +1,222 @@
+m255
+K4
+z2
+!s11f vlog 2020.4 2020.10, Oct 13 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dd:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core
+vALU
+Z1 !s110 1767171251
+!i10b 1
+!s100 Tc=;0P2_;3G?ZENko6PKi3
+Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IJYRAQ_m3<LomI;lfn<O8i0
+Z3 dD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core
+w1766990932
+8ALU.v
+FALU.v
+!i122 338
+L0 11 85
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+Z5 OL;L;2020.4;71
+r1
+!s85 0
+31
+Z6 !s108 1767171251.000000
+Z7 !s107 register.v|PC.v|lsu.v|fetcher.v|decoder.v|core_controller.v|core.v|ALU.v|
+Z8 !s90 ALU.v|core.v|core_controller.v|decoder.v|fetcher.v|lsu.v|PC.v|register.v|
+!i113 0
+Z9 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z10 tCvgOpt 0
+n@a@l@u
+vcore
+!s110 1767509770
+!i10b 1
+!s100 QBfFJ8kWAzT??n7e9lCMj3
+R2
+ITh0SjZjWGdN]h]zC]PaW=2
+R0
+w1767171022
+8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\core.v
+Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\core.v
+!i122 345
+L0 10 229
+R4
+R5
+r1
+!s85 0
+31
+!s108 1767509770.000000
+!s107 d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\core.v|
+!s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\core.v|
+!i113 0
+Z11 o-nologo -work work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R10
+vcore_controller
+!s110 1767508333
+!i10b 1
+!s100 BjhI3[0=^5SNaaEER`P`42
+R2
+I00XUb4=cn2]F;6U_fl`=22
+R0
+w1766994509
+8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\core_controller.v
+Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\core_controller.v
+!i122 344
+L0 10 97
+R4
+R5
+r1
+!s85 0
+31
+!s108 1767508333.000000
+!s107 d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\core_controller.v|
+!s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\core_controller.v|
+!i113 0
+R11
+R10
+vdecoder
+!s110 1767507339
+!i10b 1
+!s100 VYa<OFiajlHCgc^Db:^_K0
+R2
+IFB:WZ2Z8jE:ZOLNkRkCW>1
+R0
+w1767168559
+8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\decoder.v
+Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\decoder.v
+!i122 343
+L0 10 136
+R4
+R5
+r1
+!s85 0
+31
+!s108 1767507339.000000
+!s107 d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\decoder.v|
+!s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\decoder.v|
+!i113 0
+R11
+R10
+vfetcher
+R1
+!i10b 1
+!s100 @a@z=lzm:f:4KQ5`fDGTW3
+R2
+ILA5e==mcnzJ2QL<=3D9WC0
+R3
+w1766994045
+8fetcher.v
+Ffetcher.v
+!i122 338
+L0 10 60
+R4
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+R10
+vlsu
+!s110 1767506429
+!i10b 1
+!s100 WNM0mOUzZOf3[kIkX^aLQ3
+R2
+Imc61mD6mPJUEWn?ok:F>J3
+R0
+w1767170556
+8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\lsu.v
+Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\lsu.v
+!i122 342
+L0 10 167
+R4
+R5
+r1
+!s85 0
+31
+!s108 1767506429.000000
+!s107 d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\lsu.v|
+!s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\lsu.v|
+!i113 0
+R11
+R10
+vPC
+R1
+!i10b 1
+!s100 n<=lR1Nf`c4RzY93?1<f?0
+R2
+I70;boWb=ThXz4FjfBOhdh1
+R3
+w1766995381
+8PC.v
+FPC.v
+!i122 338
+L0 10 56
+R4
+R5
+r1
+!s85 0
+31
+R6
+R7
+R8
+!i113 0
+R9
+R10
+n@p@c
+vregister
+!s110 1767516102
+!i10b 1
+!s100 [_f7lLzDRm[AI0AeWIH[T0
+R2
+I8HijON=Q[G>QQD6ZMPl:b3
+R0
+w1767170958
+8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\register.v
+Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\register.v
+!i122 348
+L0 11 122
+R4
+R5
+r1
+!s85 0
+31
+!s108 1767516102.000000
+!s107 d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\register.v|
+!s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\register.v|
+!i113 0
+R11
+R10
+vtb_core
+DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+!s110 1767513119
+!i10b 1
+!s100 :kQ3Cg;eHG?o6OJGi5<YU1
+R2
+I=Hz1FTXlozL=`cmEQKUkb0
+S1
+R0
+w1767513119
+8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\TB\tb_core.sv
+Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\TB\tb_core.sv
+!i122 347
+L0 14 84
+R4
+R5
+r1
+!s85 0
+31
+!s108 1767513119.000000
+!s107 d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\TB\tb_core.sv|
+!s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\core\TB\tb_core.sv|
+!i113 0
+R11
+R10

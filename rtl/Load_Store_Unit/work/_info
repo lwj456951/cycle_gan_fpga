@@ -1,0 +1,34 @@
+m255
+K4
+z2
+!s11f vlog 2020.4 2020.10, Oct 13 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dd:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/Load_Store_Unit
+vlsu
+!s110 1766989720
+!i10b 1
+!s100 T1hlmH4J8@BYn<?b4KYHX2
+!s11b Dg1SIo80bB@j0V0VzS_@n1
+ImFFFX2Cd>RnINUXJbL?z;2
+R0
+w1766900420
+8d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\Load_Store_Unit\lsu.v
+Fd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\Load_Store_Unit\lsu.v
+!i122 18
+L0 10 104
+VDg1SIo80bB@j0V0VzS_@n1
+OL;L;2020.4;71
+r1
+!s85 0
+31
+!s108 1766989720.000000
+!s107 d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\Load_Store_Unit\lsu.v|
+!s90 -nologo|-work|work|d:\Voice_Conversion_Project\NPU\cycle_gan_fpga\rtl\Load_Store_Unit\lsu.v|
+!i113 0
+o-nologo -work work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+tCvgOpt 0
