@@ -1,0 +1,26 @@
+Core(vector register) verification plan
+1. 指令集
+MnemonicSemanticsEncoding (32bits)
+NOPPC = PC + 1 [0]最高位0000 xxxx xxxx xxxx 
+BRnzp 
+NZP PC =IMM8[0]最高位0001 nzpx iiii iiiiCMP NZP sign(Rs -Rt) [0]最高位0010 xxxx ssss tttt 
+ADD Rd = Rs + Rt 
+[0]最高位0011 dddd ssss ttttSUB Rd =Rs -Rt 
+[0]最高位0100 dddd ssss ttttMUL Rd = Rs * Rt 
+[0]最高位0101 dddd ssss ttttDIV Rd = Rs / Rt [0]最高位0110 dddd ssss tttt 
+LDR Rd =global_data_mem[Rs] 
+[0]最高位0111 dddd ssss xxxxSTR global_data_mem [Rs]=Rt[0]最高位1000 xxxx ssss tttt 
+CONST Rd = IMM8 
+[0]最高位1001 dddd iiii iiiiRET done [0]最高位1111 xxxx xxxx xxxxVADDRd[i] = Rs[i] + Rt[i] i=0…3[1]最高位0011 dddd ssss ttttVSUBRd[i] = Rs[i] - Rt[i] i=0…3[1]最高位0100 dddd ssss ttttVMULRd[i] = Rs[i] * Rt[i] i=0…3[1]最高位0101 dddd ssss ttttVDIVRd[i] = Rs[i] / Rt[i] i=0…3[1]最高位0110 dddd ssss ttttVLDRRd[i]=global_data_mem[Rs[i]] i=0…3[1]最高位0111 dddd ssss xxxxVSTRglobal_data_mem [Rs[i]]=Rt[i]
+i=0…3[1]最高位1000 xxxx ssss tttt 
+2. Verification plan
+i. 验证平台组件
+　　验证平台组件在下降沿工作。
+　　验证平台包含程序ram和数据ram，core从程序ram取指令数据ram存取数据，最后将计算结果输出至数据ram指定位置。Ram数据的更新严格根据总线时序。
+　　Driver 从sequencer读取对应的任务包（包括指令流和对应数据）将其写入程序ram和数据ram并复位和启动core进行计算，将写入后的程序ram和数据ram以及寄存器状态打包送给scoreboard；
+　　Monitor 检测控制信号done，记录任务结束后的计算结果和此时的寄存器状态（需要寄存器模型）打包发送给scoreboard。
+　　Scoreboard接收Driver数据包生成标准输出结果，接收Monitor数据包比对标准数据包生成验证结果并输出。
+　　寄存器模型上升沿触发delay小的延时后门更新寄存器。
+ii. 验证目标和覆盖率
+　　计划验证所有指令和部分指令顺序，分支、计算、存取指令之间的顺序，以及不同计算指令的顺序。重点验证向量相关指令，针对向量计算四则运算进行验证，以及向量指令和非向量指令的顺序。
+验证目标类别覆盖点覆盖率单指令所有指令至少出现一次两个不同指令的顺序。指令可以分为分支指令，标量运算指令，标量存取指令、向量运算指令、向量存取指令、其他指令六种。该覆盖点共36种可能。指令操作数涉及所有可读写寄存器目标操作数寄存器0~12第一操作数寄存器0~12第二操作数寄存器0~12　　
