@@ -2,8 +2,8 @@
  * @Author: jia200151@126.com
  * @Date: 2025-10-30 12:23:29
  * @LastEditors: lwj
- * @LastEditTime: 2025-11-11 14:19:41
- * @FilePath: \rtld:\Voice_Conversion_Project\NPU\cycle_gan_fpga\README.md
+ * @LastEditTime: 2026-01-06 20:05:35
+ * @FilePath: \undefinedd:\Voice_Conversion_Project\NPU\cycle_gan_fpga\README.md
  * @Description: 
  * Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
 -->
@@ -14,3 +14,5 @@
  2025/11/11
  完成带有分块矩阵累加的矩阵乘法器的rtl编写。
  开始debug。
+ 2026/01/06
+ vector register core testbench
