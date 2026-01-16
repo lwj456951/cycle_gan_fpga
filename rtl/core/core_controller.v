@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2025-12-29 14:51:04
  * @LastEditors: lwj
- * @LastEditTime: 2025-12-29 15:17:46
+ * @LastEditTime: 2026-01-09 17:08:05
  * @FilePath: \core\core_controller.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -17,7 +17,7 @@ module core_controller (
 
     // Memory Access State
     input reg [2:0] fetcher_state,
-    input reg [1:0] lsu_state ,
+    input reg [2:0] lsu_state ,
 
     // Current & Next PC
     output reg [7:0] current_pc,

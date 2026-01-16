@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2025-12-29 14:31:33
  * @LastEditors: lwj
- * @LastEditTime: 2025-12-29 14:48:52
+ * @LastEditTime: 2026-01-09 10:58:12
  * @FilePath: \core\ALU.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -50,7 +50,7 @@ module ALU#(
             if (core_state == 3'b101) begin 
                 if (decoded_alu_output_mux == 1) begin 
                     // Set values to compare with NZP register in alu_out[2:0]
-                    alu_out_reg <= {5'b0, (rs - rt > 0), (rs - rt == 0), (rs - rt < 0)};
+                    alu_out_reg <= {5'b0, (rs - rt < 0), (rs - rt == 0), (rs - rt > 0)};
                 end
                 else if(decoded_alu_vector_mux) begin
                     for(vector_i = 0;vector_i < Vector_Size;vector_i = vector_i + 1) begin
