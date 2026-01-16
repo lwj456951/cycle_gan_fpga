@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2025-12-28 12:58:36
  * @LastEditors: lwj
- * @LastEditTime: 2025-12-31 16:40:59
+ * @LastEditTime: 2026-01-16 15:27:43
  * @FilePath: \core\lsu.v
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -44,7 +44,7 @@ module lsu#(
     output reg [Vector_Size*DATA_BITS-1:0] v_lsu_out
 );
     reg [$clog2(Vector_Size):0] addr_pointer;
-  localparam IDLE = 3'b00, REQUESTING = 3'b01, WAITING = 3'b10, ADDR_ADD = 3'b11,DONE = 3'b100;
+  localparam IDLE = 3'b000, REQUESTING = 3'b001, WAITING = 3'b010, ADDR_ADD = 3'b011,DONE = 3'b100;
    always @(posedge clk) begin
         if (reset) begin
             lsu_state <= IDLE;
@@ -55,6 +55,7 @@ module lsu#(
             mem_write_address <= 0;
             mem_write_data <= 0;
             addr_pointer <= 0;
+            v_lsu_out <= 'd0;
         end else if (enable) begin
             if(decoded_vector_mux)begin//读vector size 次的数据填满vector register，状态机加一个地址自增即可
                 case (lsu_state)

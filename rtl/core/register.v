@@ -31,14 +31,25 @@ module register#(parameter DATA_BITS = 8,
                  output reg [7:0] rs,
                  output reg [7:0] rt,
                  output reg [8*Vector_Size-1:0] v_rs,
-                 output reg [8*Vector_Size-1:0] v_rt);
+                 output reg [8*Vector_Size-1:0] v_rt,
+                 output reg [DATA_BITS*16-1:0] registers_out,
+                 output reg [DATA_BITS*Vector_Size*16-1:0] v_registers_out
+                 );
     localparam ARITHMETIC = 2'b00,
     MEMORY = 2'b01,
     CONSTANT = 2'b10;
     
     // 16 registers per thread (13 free registers and 3 read-only registers)
-    reg [DATA_BITS-1:0] registers[15:0];
-    reg [DATA_BITS*Vector_Size-1:0] v_registers[12:0];
+    reg [DATA_BITS-1:0] registers[0:15];
+    reg [DATA_BITS*Vector_Size-1:0] v_registers[0:15];
+    integer vreg_i;
+    integer reg_i;
+    always @(*) begin
+        for (reg_i = 0;reg_i<16 ;reg_i=reg_i+1 ) begin
+                v_registers_out[reg_i*DATA_BITS+:DATA_BITS] <= v_registers[reg_i];
+                registers_out[reg_i*DATA_BITS*Vector_Size+:DATA_BITS] <= registers[reg_i];
+            end
+    end
     always @(posedge clk) begin
         if (reset) begin
             // Empty rs, rt
@@ -64,6 +75,9 @@ module register#(parameter DATA_BITS = 8,
             registers[13] <= core_id;           //core id
             registers[14] <= engine_id;          // engine id
             registers[15] <= task_id;         // task id
+            for (vreg_i = 0;vreg_i<16 ;vreg_i=vreg_i+1 ) begin
+                v_registers[vreg_i] <= 0;
+            end
             end else if (enable) begin
             
             // Fill rs/rt when core_state = REQUEST

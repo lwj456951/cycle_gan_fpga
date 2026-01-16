@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2026-01-07 15:21:35
  * @LastEditors: lwj
- * @LastEditTime: 2026-01-07 17:17:40
+ * @LastEditTime: 2026-01-16 16:04:19
  * @FilePath: \core\TB\testbench.sv
  * @Description: 
  * @Copyright (c) 2026 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -28,11 +28,20 @@ class  registers_model#(parameter int DATA_MEM_ADDR_BITS = 8,
     reg[DATA_MEM_DATA_BITS-1:0] registers[0:15];
     reg[DATA_MEM_DATA_BITS-1:0] v_registers[0:15][0:Vector_Size-1];
     reg[2:0] nzp;
+    virtual core_if vif;
+    function new(virtual core_if vif=null);
+        // Initialize arrays to avoid null references
+        foreach(registers[i]) registers[i] = 0;
+        foreach(v_registers[i,j]) v_registers[i][j] = 0;
+        nzp = 3'd0;
+        this.vif = vif;
+    endfunction
+
     function void reset();
         for (integer index=0; index<16 ; index=index+1) begin
-            registers[index] <= 0;
+            registers[index] = 0;
             for(integer v_index=0;v_index < Vector_Size;v_index=v_index+1)begin
-                v_registers[index][v_index] <= 0;
+                v_registers[index][v_index] = 0;
             end
         end
         nzp = 3'd0;
@@ -48,6 +57,14 @@ class  registers_model#(parameter int DATA_MEM_ADDR_BITS = 8,
         end
     endfunction
 
+    task main();
+    forever begin
+         @(posedge this.vif.clk);
+        update(vif.registers,vif.v_registers);
+    end
+       
+
+    endtask
 endclass
 class mem_model#(parameter int mem_width=8);
     string name;
@@ -55,7 +72,7 @@ class mem_model#(parameter int mem_width=8);
     logic[mem_width-1:0] mem[];
     virtual core_if vif;
     
-    function new(string name,int mem_depth,virtual core_if vif);
+    function new(string name="mem_model",int mem_depth=1024,virtual core_if vif=null);
         this.name = name;
         this.mem_depth = mem_depth;
         this.vif = vif;
@@ -69,28 +86,44 @@ class mem_model#(parameter int mem_width=8);
         end
         wait(!vif.reset);
     endtask
-    task peek(input int addr,input logic[mem_width-1:0]data);//back door read
+    function void poke(input int addr,input logic[mem_width-1:0]data);//back door write
         this.mem[addr] = data;
-    endtask
-    task poke(input int addr,output logic[mem_width-1:0] data);//back door write
-        data = this.mem[addr];
-    endtask
+    endfunction
+    function logic[mem_width-1:0] peek(input int addr);//back door read
+        peek = this.mem[addr];
+    endfunction
 endclass
 
 class program_mem#(parameter int mem_width=32) extends mem_model#(.mem_width(mem_width));
+    // Add constructor
+    function new(string name="program_mem", int mem_depth=1024, virtual core_if vif=null);
+        super.new(name, mem_depth, vif);  // Call base class constructor
+    endfunction
     //front door
     task read();
+        
         vif.program_mem_read_ready <= 0;
         if(vif.program_mem_read_valid)begin
             vif.program_mem_read_data <= mem[vif.program_mem_read_address];
             vif.program_mem_read_ready <= 1;  
         end
     endtask
+    task main();
+        forever begin
+            @(posedge this.vif.clk);
+            read();
+        end
+    endtask
 endclass //className extends superClass;
 
 class data_mem#(parameter int mem_width=8) extends mem_model#(.mem_width(mem_width));
+    // Add constructor
+    function new(string name="data_mem", int mem_depth=1024, virtual core_if vif=null);
+        super.new(name, mem_depth, vif);  // Call base class constructor
+    endfunction
     //front door
     task read();
+        @(posedge this.vif.clk);
         vif.data_mem_read_ready <= 0;
         if(vif.data_mem_read_valid)begin
             vif.data_mem_read_data <= mem[vif.data_mem_read_address];
@@ -99,12 +132,22 @@ class data_mem#(parameter int mem_width=8) extends mem_model#(.mem_width(mem_wid
     endtask
 
     task write();
+        @(posedge this.vif.clk);
         vif.data_mem_write_ready <= 0;
         if(vif.data_mem_write_valid)begin
             mem[vif.data_mem_write_address] <= vif.data_mem_write_data;
             vif.data_mem_write_ready <= 1;
         end
 
+    endtask
+    task main();
+        forever begin
+            @(posedge this.vif.clk);
+            fork
+                write();
+                read();
+            join       
+        end
     endtask
 endclass
 interface core_if#(
@@ -133,6 +176,18 @@ interface core_if#(
     logic data_mem_write_valid; 
     logic[DATA_MEM_ADDR_BITS-1:0]  data_mem_write_address;
     logic[DATA_MEM_DATA_BITS-1:0]  data_mem_write_data;
+
+    logic[DATA_MEM_DATA_BITS*16-1:0] registers_out;
+    logic[DATA_MEM_DATA_BITS*Vector_Size*16-1:0] v_registers_out;
+    logic[DATA_MEM_DATA_BITS-1:0] registers[0:15];
+    logic [DATA_MEM_DATA_BITS*Vector_Size-1:0] v_registers[0:15];
+    integer reg_i;
+    always @(*) begin
+        for (reg_i = 0;reg_i<16 ;reg_i=reg_i+1 ) begin
+                v_registers[reg_i] <= v_registers_out[reg_i*DATA_MEM_DATA_BITS+:DATA_MEM_DATA_BITS];
+                registers[reg_i] <= registers_out[reg_i*DATA_MEM_DATA_BITS*Vector_Size+:DATA_MEM_DATA_BITS];
+            end
+    end
 endinterface //core_if
 typedef enum
  {NOP=00000,BRNZP=00001,CMP=00010,ADD=00011,SUB=00100,MUL=00101,DIV=00110,LDR=00111,STR=01000,CONST=01001,RET=01111,
@@ -216,39 +271,86 @@ class transaction#(
     int data_num;
     int i_num;
     rand instruction_transaction i_trans[];//program ram 
-    rand data_transaction data_trans[$pow(2,DATA_MEM_ADDR_BITS)];//data's number is fixed;
+    rand data_transaction data_trans[2**DATA_MEM_ADDR_BITS];//data's number is fixed;
     registers_model rm;
-    constraint instruction_size{
-        i_trans.size() inside {[1:$pow(2,PROGRAM_MEM_ADDR_BITS)]};//instruction's number is random;
-    }
 
     function new();
         i_trans = new[0];
         this.data_num =  $pow(2,DATA_MEM_ADDR_BITS);
+        // Initialize data_trans array
+        foreach(data_trans[i]) begin
+            data_trans[i] = new();
+        end
+        rm = new();
+    endfunction
+    function void pre_randomize();
+        this.i_num = $urandom_range(1,255);
+         $display("i_trans size(): %0d", this.i_num);
+        this.i_trans = new[i_num];
+       
     endfunction
 
     function void post_randomize();
+        
         ISA i_type;
+        $display("i_trans size(): %0d", this.i_num);
+        // First, ensure all i_trans elements are constructed
+        foreach(i_trans[i]) begin
+            i_trans[i] = new();
+            // Randomize the new instruction
+            if (!i_trans[i].randomize()) begin
+                $error("Failed to randomize instruction_transaction at index %0d", i);
+            end
+            //$display("i_trans type: %s", this.i_trans[i].instruction_type.name());
+        end
         i_type = RET;
-        this.i_num = i_trans.size();
+        if (i_num > 0) begin
+            i_trans[i_num-1].instruction_type = i_type; //set the last instruction type RET
+            i_trans[i_num-1].post_randomize();
+        end
+    endfunction
 
-        i_trans[i_num-1].instruction_type = i_type;//set the last instruction type RET
-        i_trans[i_num-1].post_randomize();
+    function int compare(transaction tr);//compare register and data ram
+        compare = 1;
+        for (integer reg_i=0;reg_i < 16 ;reg_i++ ) begin
+            if(this.rm.registers[reg_i]!=tr.rm.registers[reg_i])
+                $display("R%d,exp:%d,act:%d;",reg_i,this.rm.registers[reg_i],tr.rm.registers[reg_i]);
+                compare = 0;
+                break;
+            if(this.rm.v_registers[reg_i]!=tr.rm.v_registers[reg_i])
+                compare = 0;
+                break;
+        end
+        for (integer ram_i=0; ram_i < $pow(2,PROGRAM_MEM_ADDR_BITS) ; ram_i++) begin
+            if(this.data_trans[ram_i].data != tr.data_trans[ram_i].data)
+                compare = 0;
+                break;
+        end             
+        return compare;
+
     endfunction
 endclass
 class generator;
     rand transaction tr;
     mailbox gen2dri;
-
+    int repeat_num;
     function new(mailbox gen2dri);
         this.gen2dri = gen2dri; 
+        this.repeat_num = 50;
     endfunction
 
-
+    function void config_num(int repeat_num);
+        this.repeat_num = repeat_num;
+    endfunction
     task automatic main();
-        tr = new();
-        tr.randomize();
-        gen2dri.put(tr);
+        for (integer no_tr=0;no_tr < repeat_num ;no_tr++ ) begin
+            tr = new();
+            tr.randomize();
+            $display("time:%d",$time());
+            $display("i_num:%d,first i_type:%s,first_data:%d",tr.i_trans.size(),tr.i_trans[0].instruction_type.name(),tr.data_trans[0].data );
+            gen2dri.put(tr);
+        end
+        $display("generator done");
     endtask //automatic
 endclass
 
@@ -292,36 +394,46 @@ class driver#(
             data_ram.reset();
             rm.reset();
         join
-        $display("/******reset ended******/");
         wait(!vif.reset);
+        $display("/******reset ended******/");
     endtask
 
-    function void mem_load(input transaction tr);
+    function void mem_load(input transaction tr);//把获取的transaction中的数据写到存储器中
         integer i_addr;
         integer data_addr;
         logic[PROGRAM_MEM_DATA_BITS-1:0] instruction;
         logic[DATA_MEM_DATA_BITS-1:0] data;
         for (i_addr = 0;i_addr<tr.i_num ;i_addr=i_addr+1 ) begin
-            this.program_ram.peek(i_addr,instruction);
-            tr.i_trans[i_addr].instruction = instruction;
+            instruction = tr.i_trans[i_addr].instruction;
+            this.program_ram.poke(i_addr,instruction);
+            
         end
         for (data_addr = 0;data_addr<tr.data_num ; data_addr=data_addr+1) begin
-            this.data_ram.peek(data_addr,data);
-            tr.data_trans[data_addr].data = data;
+            data = tr.data_trans[data_addr].data;
+            this.data_ram.poke(data_addr,data);
+            
         end
     endfunction
 
 
     task main();
         transaction tr;
-        
-        @(negedge vif.clk);
-        gen2dri.get(tr);
-        dri2scb.put(tr);
-        mem_load(tr);
-        @(posedge vif.clk);
-        vif.start <= 1;
-        wait(vif.done);
+        tr = new();
+        forever begin
+            $display("negedge clk");
+            @(negedge vif.clk);
+            $display("gen2dri get");
+            gen2dri.get(tr);
+            $display("dri2scb put");
+            dri2scb.put(tr);
+            $display("mem load start");
+            mem_load(tr);
+            $display("mem load success");
+            @(posedge vif.clk);
+            vif.start <= 1;
+            wait(vif.done);
+        end
+     
     endtask
 endclass
 class monitor#(
@@ -345,27 +457,37 @@ class monitor#(
         this.data_ram = data_ram;
         this.rm = rm;
     endfunction
-    function void mem_store(output transaction tr);
+    function void mem_store(output transaction tr);//读取存储器模型中的数据
         integer i_addr;
         integer data_addr;
         integer reg_addr;
         logic[DATA_MEM_DATA_BITS-1:0] reg_data;
         logic[DATA_MEM_DATA_BITS*Vector_Size-1:0] vreg_data;
+        tr = new();
         for (i_addr = 0;i_addr<tr.i_trans.size() ;i_addr=i_addr+1 ) begin
-            this.program_ram.poke(i_addr,tr.i_trans[i_addr].instruction); 
+            tr.i_trans[i_addr].instruction = this.program_ram.peek(i_addr); 
         end
         for (data_addr = 0;data_addr<tr.data_num ; data_addr=data_addr+1) begin
-            this.data_ram.poke(data_addr,tr.data_trans[data_addr].data);
+            tr.data_trans[data_addr].data = this.data_ram.peek(data_addr);
         end
-        tr.rm = this.rm;
+        tr.rm.nzp = this.rm.nzp;
+        for (reg_addr = 0;reg_addr<16 ; reg_addr++) begin
+            tr.rm.registers[reg_addr] = this.rm.registers[reg_addr];
+            tr.rm.v_registers[reg_addr] = this.rm.v_registers[reg_addr];
+        end
     endfunction
     task main();
         transaction tr;
-        @(negedge vif.clk);
-        wait(vif.done);
-        mem_store(tr);
-        mon2scb.put(tr);
-        wait(vif.start);
+        forever begin
+            $display("negedge clk");
+            @(negedge vif.clk);
+            $display("wait done");
+            wait(vif.done);
+            mem_store(tr);
+            mon2scb.put(tr);
+            wait(vif.start);
+        end
+        
     endtask
 endclass
 
@@ -389,22 +511,42 @@ class agent#(
         this.gen2dri = gen2dri;
         this.mon2scb = mon2scb;
         this.dri2scb =dri2scb;
-        dri = new(vif,gen2dri,dri2scb);
-        mon = new(vif,gen2dri);
+        this.dri = new(vif,gen2dri,dri2scb);
+        this.mon = new(vif,mon2scb);
+        this.program_ram = new("program_ram",256,vif);
+        this.data_ram = new("data_ram",256,vif);
+        this.rm = new(vif);
     endfunction
 
     function void connect();
         dri.connect(program_ram,data_ram,rm);
         mon.connect(program_ram,data_ram,rm);
     endfunction
+
+    task main();
+        fork
+            mon.main();
+            dri.main();
+            program_ram.main();
+            data_ram.main();
+            rm.main();
+        join
+
+    endtask
+
 endclass
-class scoreboard;
+class scoreboard#(
+    parameter int   PROGRAM_MEM_DATA_BITS = 32,
+                    DATA_MEM_DATA_BITS    = 8,
+                    Vector_Size           = 4
+);
     mailbox mon2scb;
     mailbox dri2scb;
     transaction dri_tr_queue[$],mon_tr_queue[$];
     int num_dri_tr,num_mon_tr;
-    function new(input mailbox mon2scb);
+    function new(input mailbox mon2scb,dri2scb);
         this.mon2scb = mon2scb;
+        this.dri2scb = dri2scb;
     endfunction
 
     task receive_dri_tr();
@@ -413,6 +555,7 @@ class scoreboard;
             wait(dri2scb.num()!=0);
             dri2scb.get(tr);
             dri_tr_queue.push_back(tr);
+            num_dri_tr++;
         end
     endtask
     task receive_mon_tr();
@@ -421,14 +564,23 @@ class scoreboard;
             wait(mon2scb.num()!=0);
             mon2scb.get(tr);
             mon_tr_queue.push_back(tr);
+            num_mon_tr++;
         end
     endtask
 
-    function reference_model(input transaction tr,output transaction result);
+    function void reference_model(ref transaction tr);
+        int i;
         int pc = 0;
         int i_num;
+        reg[DATA_MEM_DATA_BITS-1:0] rs,rt;
+        reg[DATA_MEM_DATA_BITS-1:0] vrs[Vector_Size],vrt[Vector_Size];
         i_num = tr.i_num;
+        
         while(pc<tr.i_num) begin
+            rs = tr.rm.registers[tr.i_trans[pc].s_data];
+            rt = tr.rm.registers[tr.i_trans[pc].t_data];
+            vrs = tr.rm.v_registers[tr.i_trans[pc].s_data];
+            vrt = tr.rm.v_registers[tr.i_trans[pc].t_data];
             case(tr.i_trans[pc].instruction_type)
             //{NOP=00000,BRNZP=00001,CMP=00010,ADD=00011,SUB=00100,MUL=00101,DIV=00110,LDR=00111,STR=01000,CONST=01001,RET=01111,
             //VADD=10011,VSUB=10100,VMUL=10101,VDIV=10110,VLDR=10111,VSTR=11000  }
@@ -439,50 +591,63 @@ class scoreboard;
                     if(tr.i_trans[pc].d_data[3:1]&tr.rm.nzp != 3'b000)
                         pc = {tr.i_trans[pc].s_data,tr.i_trans[pc].t_data};
                 end
-                CMP:begin
-                    
+                CMP:begin            
+                    tr.rm.nzp = {rs-rt<0,rs-rt==0,rs-rt>0};
                 end
                 ADD:begin
-                    
+                    tr.rm.registers[tr.i_trans[pc].d_data] = rs + rt;
                 end
                 SUB:begin
-                    
+                    tr.rm.registers[tr.i_trans[pc].d_data] = rs - rt;
                 end
                 MUL:begin
-                    
+                    tr.rm.registers[tr.i_trans[pc].d_data] = rs * rt;
                 end
                 DIV:begin
-                    
+                    tr.rm.registers[tr.i_trans[pc].d_data] = rs / rt;
                 end
                 LDR:begin
-                    
+                    tr.rm.registers[tr.i_trans[pc].d_data] = tr.data_trans[rs].data;
                 end
                 STR:begin
-                    
+                    tr.data_trans[rs].data = rt;
                 end
                 CONST:begin
-                    
+                    tr.rm.registers[tr.i_trans[pc].d_data] = {tr.i_trans[pc].s_data,tr.i_trans[pc].t_data};
                 end
                 RET:begin
-                    
+                    break;
                 end
                 VADD:begin
+                    for (i = 0;i<Vector_Size ;i++ ) begin
+                        tr.rm.v_registers[tr.i_trans[pc].d_data][i] = vrs[i] + vrt[i];
+                    end
                     
                 end
                 VSUB:begin
-                    
+                    for (i = 0;i<Vector_Size ;i++ ) begin
+                        tr.rm.v_registers[tr.i_trans[pc].d_data][i] = vrs[i] - vrt[i];
+                    end
                 end
                 VMUL:begin
-                    
+                    for (i = 0;i<Vector_Size ;i++ ) begin
+                        tr.rm.v_registers[tr.i_trans[pc].d_data][i] = vrs[i] * vrt[i];
+                    end
                 end
                 VDIV:begin
-                    
+                    for (i = 0;i<Vector_Size ;i++ ) begin
+                        tr.rm.v_registers[tr.i_trans[pc].d_data][i] = vrs[i] / vrt[i];
+                    end
                 end
                 VLDR:begin
-                    
+                    for (i = 0;i<Vector_Size ;i++ ) begin
+                        tr.rm.v_registers[tr.i_trans[pc].d_data][i]= tr.data_trans[vrs[i]].data;
+                    end
                 end
                 VSTR:begin
-                    
+                    for (i = 0;i<Vector_Size ;i++ ) begin
+                        tr.data_trans[vrs[i]].data = vrt[i];
+                    end
                 end
             endcase
             pc = pc+1;
@@ -490,7 +655,20 @@ class scoreboard;
     endfunction
 
     task compare();
-
+        transaction exp_tr,act_tr;
+        forever begin
+            if(mon_tr_queue.size()!=0)begin
+                exp_tr = mon_tr_queue.pop_front();
+                act_tr = dri_tr_queue.pop_front();
+                $display("/*********start compare num_mon:%d,num_dri:%d*********/",num_mon_tr,num_dri_tr);
+                reference_model(exp_tr);
+                if(!act_tr.compare(exp_tr))
+                    $display("/*********EEROR*************/\n");
+                $display("/*********end compare num_mon:%d,num_dri:%d*********/",num_mon_tr,num_dri_tr);
+                
+            end
+            #1;
+        end
     endtask
 
     task main();
@@ -501,3 +679,47 @@ class scoreboard;
         join
     endtask
 endclass
+
+class environment;
+    generator gen;
+    agent agt;
+    scoreboard scb;
+    virtual core_if vif;
+    mailbox mon2scb;
+    mailbox gen2dri;
+    mailbox dri2scb;
+    int repeat_num;
+    function new(virtual core_if vif);
+        this.vif = vif;
+        gen2dri = new();
+        mon2scb = new();
+        dri2scb = new();
+        gen = new(gen2dri);
+        agt = new(vif,gen2dri,mon2scb,dri2scb);
+        scb = new(mon2scb,dri2scb);
+        agt.connect();
+    endfunction
+
+    task main();
+        gen.config_num(repeat_num);
+        agt.dri.reset();
+        fork
+            gen.main();
+            agt.main();
+            scb.main();
+        join_any
+
+        wait(scb.num_mon_tr >= repeat_num);
+        #1000;$finish;
+    endtask //automatic
+endclass
+
+program test(core_if vif);
+    environment env;
+    initial begin
+        env = new(vif);
+        env.repeat_num = 20;
+        env.main();
+    end
+    
+endprogram

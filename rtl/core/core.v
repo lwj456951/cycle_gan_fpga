@@ -19,58 +19,61 @@ module core#(parameter DATA_MEM_ADDR_BITS = 8,
              input wire enable,
              input wire [7:0] core_id,
              input wire [7:0] engine_id,
-             input reg [7:0] task_id,
-             output reg program_mem_read_valid,
-             output reg [PROGRAM_MEM_ADDR_BITS-1:0] program_mem_read_address,
-             input reg program_mem_read_ready,
-             input reg [PROGRAM_MEM_DATA_BITS-1:0] program_mem_read_data,
-             output reg data_mem_read_valid,
-             output reg [DATA_MEM_ADDR_BITS-1:0] data_mem_read_address,
-             input reg data_mem_read_ready,
-             input reg [DATA_MEM_DATA_BITS-1:0] data_mem_read_data,
-             output reg data_mem_write_valid,
-             output reg [DATA_MEM_ADDR_BITS-1:0] data_mem_write_address,
-             output reg [DATA_MEM_DATA_BITS-1:0] data_mem_write_data,
-             input reg data_mem_write_ready);
+             input wire [7:0] task_id,
+             output wire program_mem_read_valid,
+             output wire [PROGRAM_MEM_ADDR_BITS-1:0] program_mem_read_address,
+             input wire program_mem_read_ready,
+             input wire [PROGRAM_MEM_DATA_BITS-1:0] program_mem_read_data,
+             output wire data_mem_read_valid,
+             output wire [DATA_MEM_ADDR_BITS-1:0] data_mem_read_address,
+             input wire data_mem_read_ready,
+             input wire [DATA_MEM_DATA_BITS-1:0] data_mem_read_data,
+             output wire data_mem_write_valid,
+             output wire [DATA_MEM_ADDR_BITS-1:0] data_mem_write_address,
+             output wire [DATA_MEM_DATA_BITS-1:0] data_mem_write_data,
+             input wire data_mem_write_ready,
+             // registers
+             output wire [DATA_MEM_DATA_BITS*16-1:0] registers_out,
+             output wire [DATA_MEM_DATA_BITS*Vector_Size*16-1:0] v_registers_out);
     
     
     // core_controller Inputs
-    reg  [2:0] fetcher_state = 0;
-    reg  [1:0] lsu_state     = 0;
-    reg  [7:0] next_pc       = 0;
+    wire  [2:0] fetcher_state;
+    wire  [2:0] lsu_state    ;
+    wire  [7:0] next_pc      ;
     
     // core_controller Outputs
     wire [7:0]     current_pc;
     wire [2:0]     core_state;
     //fetcher Outputs
-    wire                            instruction     ;
+    wire [PROGRAM_MEM_DATA_BITS-1:0]                           instruction     ;
     // decoder Outputs
-    wire      decoded_rd_address        ;
-    wire      decoded_rs_address        ;
-    wire      decoded_rt_address        ;
-    wire      decoded_nzp               ;
-    wire      decoded_immediate         ;
+    wire [3:0]     decoded_rd_address        ;
+    wire [3:0]     decoded_rs_address        ;
+    wire [3:0]     decoded_rt_address        ;
+    wire [2:0]     decoded_nzp               ;
+    wire [7:0]     decoded_immediate         ;
     wire      decoded_reg_write_enable  ;
     wire      decoded_mem_read_enable   ;
     wire      decoded_mem_write_enable  ;
     wire      decoded_nzp_write_enable  ;
-    wire      decoded_reg_input_mux     ;
-    wire      decoded_alu_arithmetic_mux;
+    wire [1:0]     decoded_reg_input_mux     ;
+    wire [1:0]     decoded_alu_arithmetic_mux;
     wire      decoded_alu_output_mux    ;
     wire      decoded_pc_mux            ;
     wire      decoded_vector_mux        ;
     wire      decoded_ret              ;      //ret means return
     // lsu Inputs
-    reg  [7:0] rs                       ;//address
-    reg  [7:0] rt                       ;//write data
+    wire  [7:0] rs                       ;//address
+    wire  [7:0] rt                       ;//write data
     
     // lsu Outputs
     wire [DATA_MEM_DATA_BITS-1:0]     lsu_out          ;//read data
     wire [DATA_MEM_DATA_BITS*Vector_Size-1:0]       v_lsu_out       ;//read vector data
     
     // ALU Inputs
-    reg  [DATA_MEM_DATA_BITS*Vector_Size-1:0] v_rs                       ;
-    reg  [DATA_MEM_DATA_BITS*Vector_Size-1:0] v_rt                       ;
+    wire  [DATA_MEM_DATA_BITS*Vector_Size-1:0] v_rs                       ;
+    wire  [DATA_MEM_DATA_BITS*Vector_Size-1:0] v_rt                       ;
     
     // ALU Outputs
     wire   [DATA_MEM_DATA_BITS-1:0]                 alu_out  ;
@@ -150,15 +153,15 @@ module core#(parameter DATA_MEM_ADDR_BITS = 8,
     .rt                      (rt),
     .v_rs                    (v_rs),
     .v_rt                    (v_rt),
-    .mem_read_ready          (mem_read_ready),
-    .mem_read_data           (mem_read_data),
-    .mem_write_ready         (mem_write_ready),
+    .mem_read_ready          (data_mem_read_ready),
+    .mem_read_data           (data_mem_read_data),
+    .mem_write_ready         (data_mem_write_ready),
     
-    .mem_read_valid          (mem_read_valid),
-    .mem_read_address        (mem_read_address),
-    .mem_write_valid         (mem_write_valid),
-    .mem_write_address       (mem_write_address),
-    .mem_write_data          (mem_write_data),
+    .mem_read_valid          (data_mem_read_valid),
+    .mem_read_address        (data_mem_read_address),
+    .mem_write_valid         (data_mem_write_valid),
+    .mem_write_address       (data_mem_write_address),
+    .mem_write_data          (data_mem_write_data),
     .lsu_state               (lsu_state),
     .lsu_out                 (lsu_out),
     .v_lsu_out               (v_lsu_out)
@@ -198,31 +201,37 @@ module core#(parameter DATA_MEM_ADDR_BITS = 8,
     .next_pc                 (next_pc)
     );
     
+
+// register Bidirs
+
     register #(
-    .DATA_BITS  (DATA_MEM_DATA_BITS),
+    .DATA_BITS  (DATA_MEM_DATA_BITS  ),
     .Vector_Size(Vector_Size)
     ) u_register (
-    .clk                     (clk),
-    .reset                   (reset),
-    .enable                  (enable),
-    .core_id                 (core_id),
-    .engine_id               (engine_id),
-    .task_id                 (task_id),
-    .core_state              (core_state),
-    .decoded_rd_address      (decoded_rd_address),
-    .decoded_rs_address      (decoded_rs_address),
-    .decoded_rt_address      (decoded_rt_address),
+    .clk                     (clk                     ),
+    .reset                   (reset                   ),
+    .enable                  (enable                  ),
+    .core_id                 (core_id                 ),
+    .engine_id               (engine_id               ),
+    .task_id                 (task_id                 ),
+    .core_state              (core_state              ),
+    .decoded_rd_address      (decoded_rd_address      ),
+    .decoded_rs_address      (decoded_rs_address      ),
+    .decoded_rt_address      (decoded_rt_address      ),
     .decoded_reg_write_enable(decoded_reg_write_enable),
-    .decoded_reg_input_mux   (decoded_reg_input_mux),
-    .decoded_immediate       (decoded_immediate),
-    .decoded_vector_mux      (decoded_vector_mux),
-    .alu_out                 (alu_out),
-    .lsu_out                 (lsu_out),
-    .v_alu_out               (v_alu_out),
-    
-    .rs                      (rs),
-    .rt                      (rt),
-    .v_rs                    (v_rs),
-    .v_rt                    (v_rt)
-    );
+    .decoded_reg_input_mux   (decoded_reg_input_mux   ),
+    .decoded_immediate       (decoded_immediate       ),
+    .decoded_vector_mux      (decoded_vector_mux      ),
+    .alu_out                 (alu_out                 ),
+    .lsu_out                 (lsu_out                 ),
+    .v_alu_out               (v_alu_out               ),
+    .v_lsu_out               (v_lsu_out               ),
+
+    .rs                      (rs                      ),
+    .rt                      (rt                      ),
+    .v_rs                    (v_rs                    ),
+    .v_rt                    (v_rt                    ),
+    .registers_out           (registers_out           ),
+    .v_registers_out         (v_registers_out         )
+);
 endmodule
