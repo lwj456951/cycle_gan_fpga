@@ -2,20 +2,12 @@
  * @Author: jia200151@126.com
  * @Date: 2026-01-07 15:21:35
  * @LastEditors: lwj
- * @LastEditTime: 2026-01-16 16:04:19
+ * @LastEditTime: 2026-01-30 10:43:21
  * @FilePath: \core\TB\testbench.sv
  * @Description: 
  * @Copyright (c) 2026 by lwj email: jia200151@126.com, All Rights Reserved.
  */
-/*** 
- * @Author: jia200151@126.com
- * @Date: 2025-12-31 16:51:02
- * @LastEditors: lwj
- * @LastEditTime: 2026-01-07 15:12:14
- * @FilePath: \core\TB\tb_core.sv
- * @Description: 
- * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
- */
+
 
 //~ `New testbench
 `timescale  1ns / 1ps
@@ -190,8 +182,9 @@ interface core_if#(
     end
 endinterface //core_if
 typedef enum
- {NOP=00000,BRNZP=00001,CMP=00010,ADD=00011,SUB=00100,MUL=00101,DIV=00110,LDR=00111,STR=01000,CONST=01001,RET=01111,
- VADD=10011,VSUB=10100,VMUL=10101,VDIV=10110,VLDR=10111,VSTR=11000  } ISA;
+ {NOP=00000,BRNZP=00001,CMP=00010,ADD=00011,SUB=00100,MUL=00101,DIV=00110,LDR=00111,STR=01000,
+ CONST=01001,RET=01111,
+ VADD=10011,VSUB=510100,VMUL=10101,VDIV=10110,VLDR=10111,VSTR=11000  } ISA;
 class instruction_transaction#(
     parameter int   DATA_MEM_ADDR_BITS = 8,
                     DATA_MEM_DATA_BITS    = 8,
@@ -199,13 +192,13 @@ class instruction_transaction#(
                     PROGRAM_MEM_DATA_BITS = 32,
                     Vector_Size           = 4
 );
-    localparam  REG_DATA_BITS= DATA_MEM_DATA_BITS/2;
+    localparam  REG_DATA_BITS= 4;
     rand ISA instruction_type;
     rand logic[REG_DATA_BITS-1:0] d_data;
     rand logic[REG_DATA_BITS-1:0] s_data;
     rand logic[REG_DATA_BITS-1:0] t_data;
     logic[PROGRAM_MEM_DATA_BITS-1:0] instruction;
-
+    constraint no_ret{ instruction_type != RET;}
     covergroup cov;
         coverpoint instruction_type{
             bins branch = {BRNZP,CMP};
@@ -222,11 +215,14 @@ class instruction_transaction#(
         
     endfunction
     function void post_randomize();
+        instruction = 0;
         instruction[PROGRAM_MEM_DATA_BITS-1] = instruction_type[4];
-        instruction[REG_DATA_BITS:0] = t_data;
-        instruction[2*REG_DATA_BITS:REG_DATA_BITS] = s_data;
-        instruction[3*REG_DATA_BITS:2*REG_DATA_BITS] = d_data;
-        instruction[3*REG_DATA_BITS+:4] = instruction_type[3:0];
+        instruction[REG_DATA_BITS-1:0] = t_data;
+        instruction[2*REG_DATA_BITS-1:REG_DATA_BITS] = s_data;
+        instruction[3*REG_DATA_BITS-1:2*REG_DATA_BITS] = d_data;
+        instruction[4*REG_DATA_BITS-1:3*REG_DATA_BITS] = instruction_type[3:0];
+       
+
         cov.sample();
     endfunction
 
@@ -237,6 +233,9 @@ class instruction_transaction#(
         $display("- s = %0d, t = %0d",s_data,t_data);
         $display("- d = %0d",d_data);
         $display("-------------------------");
+        if(instruction_type[3:0]!=instruction[15:8])
+            $display("error:%b",instruction_type[3:0]);
+        
     endfunction
 endclass
 class data_transaction#(
@@ -347,7 +346,7 @@ class generator;
             tr = new();
             tr.randomize();
             $display("time:%d",$time());
-            $display("i_num:%d,first i_type:%s,first_data:%d",tr.i_trans.size(),tr.i_trans[0].instruction_type.name(),tr.data_trans[0].data );
+            $display("i_num:%d",tr.i_trans.size());
             gen2dri.put(tr);
         end
         $display("generator done");
@@ -389,6 +388,8 @@ class driver#(
             vif.data_mem_read_ready<= 0;
             vif.data_mem_read_data<= 0;
             vif.data_mem_write_ready<= 0;
+            vif.registers_out <= 0;
+            vif.v_registers_out <= 0;
             //memory reset
             program_ram.reset();
             data_ram.reset();
@@ -398,13 +399,16 @@ class driver#(
         $display("/******reset ended******/");
     endtask
 
-    function void mem_load(input transaction tr);//把获取的transaction中的数据写到存储器中
+    function void mem_write(input transaction tr);//把获取的transaction中的数据写到存储器中
         integer i_addr;
         integer data_addr;
         logic[PROGRAM_MEM_DATA_BITS-1:0] instruction;
         logic[DATA_MEM_DATA_BITS-1:0] data;
         for (i_addr = 0;i_addr<tr.i_num ;i_addr=i_addr+1 ) begin
             instruction = tr.i_trans[i_addr].instruction;
+            $display("instruction num:%d",i_addr);
+            $display("instruction:%h",instruction);
+            tr.i_trans[i_addr].display();
             this.program_ram.poke(i_addr,instruction);
             
         end
@@ -427,11 +431,13 @@ class driver#(
             $display("dri2scb put");
             dri2scb.put(tr);
             $display("mem load start");
-            mem_load(tr);
+            mem_write(tr);
             $display("mem load success");
             @(posedge vif.clk);
+            $display("start computation");
             vif.start <= 1;
             wait(vif.done);
+        
         end
      
     endtask

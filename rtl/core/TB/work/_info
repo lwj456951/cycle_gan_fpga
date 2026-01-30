@@ -12,10 +12,10 @@ Z0 dD:/modeltech64_2020.4/examples
 T_opt
 Z1 !s11d testbench_sv_unit D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/work 1 core_if 1 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/work 
 Z2 !s11d tb_core_sv_unit D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/work 1 core_if 1 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/work 
-!s110 1768550668
-Vc;ZIIB_3M=XaFhFlToHDX1
+!s110 1769676616
+VT<?3dV8c`_UL?iQYAEN^:1
 Z3 04 7 4 work tb_core fast 0
-=1-cc28aa792ca0-6969f10c-23d-56d4
+=1-cc28aa792ca0-697b1f48-55-1694
 o-quiet -auto_acc_if_foreign -work work +acc
 Z4 tCvgOpt 0
 n@_opt
@@ -33,7 +33,7 @@ n@_opt1
 R5
 R0
 vALU
-Z6 !s110 1768550662
+Z6 !s110 1769676521
 !i10b 1
 !s100 [EWl8SmE1<lOSY0E[9Al31
 Z7 !s11b Dg1SIo80bB@j0V0VzS_@n1
@@ -42,14 +42,14 @@ Z8 dD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB
 w1767927492
 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/ALU.v
 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/ALU.v
-!i122 631
+!i122 672
 L0 11 85
 Z9 VDg1SIo80bB@j0V0VzS_@n1
 Z10 OL;L;2020.4;71
 r1
 !s85 0
 31
-Z11 !s108 1768550662.000000
+Z11 !s108 1769676521.000000
 !s107 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/ALU.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/ALU.v|
 !i113 0
@@ -57,7 +57,7 @@ Z12 o-work work -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
 R4
 n@a@l@u
 vcore
-R6
+Z13 !s110 1769676522
 !i10b 1
 !s100 HAPoW6kKT4dNSUd^`Wk@`2
 R7
@@ -66,7 +66,7 @@ R8
 w1768550356
 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core.v
 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core.v
-!i122 632
+!i122 673
 L0 10 228
 R9
 R10
@@ -80,7 +80,7 @@ R11
 R12
 R4
 vcore_controller
-R6
+R13
 !i10b 1
 !s100 5Dlf9z>484Zg5Gj3j91mD2
 R7
@@ -89,47 +89,47 @@ R8
 w1767949685
 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core_controller.v
 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core_controller.v
-!i122 633
+!i122 674
 L0 10 97
 R9
 R10
 r1
 !s85 0
 31
-R11
+Z14 !s108 1769676522.000000
 !s107 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core_controller.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core_controller.v|
 !i113 0
 R12
 R4
 Ycore_if
-Z13 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
-Z14 DXx4 work 17 testbench_sv_unit 0 22 LNm`GHz55E^mdJ5`VUdNk2
-R6
+Z15 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
+Z16 DXx4 work 17 testbench_sv_unit 0 22 TP]JaZK:EH4joC`m6`BbY1
+Z17 !s110 1769676605
 R9
 r1
 !s85 0
 !i10b 1
 !s100 moWg6Y2lE7><3KKS5;N6H0
 I9kgUF?:>:UQbL@8F6ZRbk1
-Z15 !s105 testbench_sv_unit
+Z18 !s105 testbench_sv_unit
 S1
 R8
-Z16 w1768550659
-Z17 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/testbench.sv
-Z18 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/testbench.sv
-!i122 629
+Z19 w1769676601
+Z20 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/testbench.sv
+Z21 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/testbench.sv
+!i122 680
 L0 153 0
 R10
 31
-R11
-Z19 !s107 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/testbench.sv|
-Z20 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/testbench.sv|
+Z22 !s108 1769676605.000000
+Z23 !s107 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/testbench.sv|
+Z24 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/testbench.sv|
 !i113 0
-Z21 o-work work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z25 o-work work -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
 R4
 vdecoder
-R6
+R13
 !i10b 1
 !s100 XT7_Pa=M;ag6;]=TVi8Nk0
 R7
@@ -138,21 +138,21 @@ R8
 w1767598131
 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/decoder.v
 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/decoder.v
-!i122 634
+!i122 675
 L0 10 125
 R9
 R10
 r1
 !s85 0
 31
-R11
+R14
 !s107 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/decoder.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/decoder.v|
 !i113 0
 R12
 R4
 vfetcher
-R6
+R13
 !i10b 1
 !s100 @a@z=lzm:f:4KQ5`fDGTW3
 R7
@@ -161,21 +161,21 @@ R8
 w1766994045
 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/fetcher.v
 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/fetcher.v
-!i122 635
+!i122 676
 L0 10 60
 R9
 R10
 r1
 !s85 0
 31
-R11
+R14
 !s107 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/fetcher.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/fetcher.v|
 !i113 0
 R12
 R4
 vlsu
-R6
+R13
 !i10b 1
 !s100 652NNHMGk2CNM;CiTXXS@3
 R7
@@ -184,21 +184,21 @@ R8
 w1768548463
 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/lsu.v
 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/lsu.v
-!i122 636
+!i122 677
 L0 10 168
 R9
 R10
 r1
 !s85 0
 31
-R11
+R14
 !s107 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/lsu.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/lsu.v|
 !i113 0
 R12
 R4
 vPC
-R6
+R13
 !i10b 1
 !s100 n<=lR1Nf`c4RzY93?1<f?0
 R7
@@ -207,14 +207,14 @@ R8
 w1766995381
 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/PC.v
 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/PC.v
-!i122 637
+!i122 678
 L0 10 56
 R9
 R10
 r1
 !s85 0
 31
-R11
+R14
 !s107 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/PC.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/PC.v|
 !i113 0
@@ -222,7 +222,7 @@ R12
 R4
 n@p@c
 vregister
-R6
+R13
 !i10b 1
 !s100 Wo7MT;=JmR0XH8[@2nEV`1
 R7
@@ -231,121 +231,121 @@ R8
 w1768550188
 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/register.v
 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/register.v
-!i122 638
+!i122 679
 L0 11 121
 R9
 R10
 r1
 !s85 0
 31
-R11
+R14
 !s107 D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/register.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/register.v|
 !i113 0
 R12
 R4
 vtb_core
-R13
-DXx4 work 15 tb_core_sv_unit 0 22 Y:;=8N@aA[MQWUmlRKNE32
+R15
+DXx4 work 15 tb_core_sv_unit 0 22 Y9F8Cj]]modIe[CG[W3;n2
 R6
 R9
 r1
 !s85 0
 !i10b 1
-!s100 fkEngB`YNlNHB5ZOLnd<:3
-I:8:aH_4ejF3ke2KW7G;HQ2
+!s100 Nhi84XG3nV@6Ge:n`@;Y:0
+ISU:2QgENgCV0JlcPQh^de3
 !s105 tb_core_sv_unit
 S1
 R8
-w1768550098
-Z22 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv
-Z23 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv
-!i122 628
-L0 15 91
+w1769674348
+Z26 8D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv
+Z27 FD:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv
+!i122 669
+L0 15 104
 R10
 31
 R11
-Z24 !s107 testbench.sv|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv|
-Z25 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv|
+Z28 !s107 testbench.sv|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv|
+Z29 !s90 -reportprogress|300|-work|work|-vopt|-sv|-stats=none|D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv|
 !i113 0
-R21
+R25
 R4
 Xtb_core_sv_unit
-Z26 !s115 core_if
-R13
+Z30 !s115 core_if
+R15
 R6
-VY:;=8N@aA[MQWUmlRKNE32
+VY9F8Cj]]modIe[CG[W3;n2
 r1
 !s85 0
 !i10b 1
-!s100 @C6f@3a@oS^LiZk:WF]P>3
-IY:;=8N@aA[MQWUmlRKNE32
+!s100 ]h4VahH[nnIocRH3]I>?_2
+IY9F8Cj]]modIe[CG[W3;n2
 !i103 1
 S1
 R8
-R16
-R22
-R23
+w1769676476
+R26
+R27
 Ftestbench.sv
-!i122 628
-Z27 L0 23 0
+!i122 669
+Z31 L0 23 0
 R10
 31
 R11
-R24
-R25
+R28
+R29
 !i113 0
-R21
+R25
 R4
 4test
-R13
-R14
-R6
+R15
+R16
+R17
 R9
 r1
 !s85 0
 !i10b 1
-!s100 1[mo6kH3NJE1b3TW^4J8_2
-IDKFVM?e^;zQkeRCkl@hF?1
-R15
+!s100 de;R`UfUf76SW4:ebXFB>0
+I?J2M`1lX@<nH<Efc64Cod0
+R18
 S1
 R8
-R16
-R17
-R18
-!i122 629
-L0 717 0
-R10
-31
-R11
 R19
 R20
-!i113 0
 R21
+!i122 680
+L0 731 0
+R10
+31
+R22
+R23
+R24
+!i113 0
+R25
 R4
 Xtestbench_sv_unit
-R26
-R13
-R6
-VLNm`GHz55E^mdJ5`VUdNk2
+R30
+R15
+R17
+VTP]JaZK:EH4joC`m6`BbY1
 r1
 !s85 0
 !i10b 1
-!s100 TKih;hOPGzzzdCjS9JSAQ2
-ILNm`GHz55E^mdJ5`VUdNk2
+!s100 >R;PA^j3jWWMjc@0@7foG2
+ITP]JaZK:EH4joC`m6`BbY1
 !i103 1
 S1
 R8
-R16
-R17
-R18
-!i122 629
-R27
-R10
-31
-R11
 R19
 R20
-!i113 0
 R21
+!i122 680
+R31
+R10
+31
+R22
+R23
+R24
+!i113 0
+R25
 R4
