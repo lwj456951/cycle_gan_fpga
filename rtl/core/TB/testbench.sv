@@ -2,12 +2,12 @@
  * @Author: jia200151@126.com
  * @Date: 2026-01-07 15:21:35
  * @LastEditors: lwj
- * @LastEditTime: 2026-01-30 10:43:21
+ * @LastEditTime: 2026-01-30 19:44:34
  * @FilePath: \core\TB\testbench.sv
  * @Description: 
  * @Copyright (c) 2026 by lwj email: jia200151@126.com, All Rights Reserved.
  */
-
+ 
 
 //~ `New testbench
 `timescale  1ns / 1ps
@@ -727,5 +727,7 @@ program test(core_if vif);
         env.repeat_num = 20;
         env.main();
     end
+    
+
     
 endprogram
