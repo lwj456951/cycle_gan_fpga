@@ -2,7 +2,7 @@
  * @Author: jia200151@126.com
  * @Date: 2025-12-31 16:51:02
  * @LastEditors: lwj
- * @LastEditTime: 2026-01-16 15:54:58
+ * @LastEditTime: 2026-01-29 16:12:00
  * @FilePath: \core\TB\tb_core.sv
  * @Description: 
  * @Copyright (c) 2025 by lwj email: jia200151@126.com, All Rights Reserved.
@@ -52,8 +52,15 @@ wire[DATA_MEM_DATA_BITS*Vector_Size*16-1:0]             v_registers_out         
 core_if intf(clk,reset);
 test t1(intf);
 /************** testbench*********************/
-
-
+integer reg_i;
+logic[DATA_MEM_DATA_BITS-1:0] registers[0:15];
+logic [DATA_MEM_DATA_BITS*Vector_Size-1:0] v_registers[0:15];
+always @(*) begin
+    for (reg_i = 0;reg_i<16 ;reg_i=reg_i+1 ) begin
+            v_registers[reg_i] <= v_registers_out[reg_i*DATA_MEM_DATA_BITS+:DATA_MEM_DATA_BITS];
+            registers[reg_i] <= registers_out[reg_i*DATA_MEM_DATA_BITS*Vector_Size+:DATA_MEM_DATA_BITS];
+        end
+end
 initial
 begin
     forever #(PERIOD/2)  clk=~clk;
@@ -61,8 +68,14 @@ end
 
 initial
 begin
-    #(PERIOD*2) reset  =  1;
+    reset  =  1;
     #(PERIOD*2) reset  =  0;
+    forever begin
+        wait(intf.done);
+        reset = 1;
+        @(posedge intf.clk);
+        reset = 0;
+    end
 end
 
 core #(

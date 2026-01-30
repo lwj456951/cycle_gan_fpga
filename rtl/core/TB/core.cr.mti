@@ -5,14 +5,12 @@ Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 Top level modules:
 	PC
 
-} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/testbench.sv {1 {vlog -work work -vopt -sv -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/testbench.sv
+} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core_controller.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core_controller.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling package testbench_sv_unit
--- Compiling interface core_if
--- Compiling program test
+-- Compiling module core_controller
 
 Top level modules:
-	test
+	core_controller
 
 } {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/lsu.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/lsu.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
@@ -21,19 +19,12 @@ Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 Top level modules:
 	lsu
 
-} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core_controller.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core_controller.v
+} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/fetcher.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/fetcher.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module core_controller
+-- Compiling module fetcher
 
 Top level modules:
-	core_controller
-
-} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core.v
-Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module core
-
-Top level modules:
-	core
+	fetcher
 
 } {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/register.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/register.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
@@ -42,16 +33,33 @@ Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 Top level modules:
 	register
 
-} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/fetcher.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/fetcher.v
+} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/core.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module fetcher
+-- Compiling module core
 
 Top level modules:
-	fetcher
+	core
 
-} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv {1 {vlog -work work -vopt -sv -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv
+} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv {2 {vlog -work work -vopt -sv -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/tb_core.sv
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 -- Compiling package tb_core_sv_unit
+** Warning: testbench.sv(193): (vlog-2999) Enum literal 'NOP' width (5) must match enum's width(32).
+** Warning: testbench.sv(193): (vlog-2999) Enum literal 'BRNZP' width (5) must match enum's width(32).
+** Warning: testbench.sv(193): (vlog-2999) Enum literal 'CMP' width (5) must match enum's width(32).
+** Warning: testbench.sv(193): (vlog-2999) Enum literal 'ADD' width (5) must match enum's width(32).
+** Warning: testbench.sv(193): (vlog-2999) Enum literal 'SUB' width (5) must match enum's width(32).
+** Warning: testbench.sv(193): (vlog-2999) Enum literal 'MUL' width (5) must match enum's width(32).
+** Warning: testbench.sv(193): (vlog-2999) Enum literal 'DIV' width (5) must match enum's width(32).
+** Warning: testbench.sv(193): (vlog-2999) Enum literal 'LDR' width (5) must match enum's width(32).
+** Warning: testbench.sv(193): (vlog-2999) Enum literal 'STR' width (5) must match enum's width(32).
+** Warning: testbench.sv(194): (vlog-2999) Enum literal 'CONST' width (5) must match enum's width(32).
+** Warning: testbench.sv(194): (vlog-2999) Enum literal 'RET' width (5) must match enum's width(32).
+** Warning: testbench.sv(195): (vlog-2999) Enum literal 'VADD' width (5) must match enum's width(32).
+** Warning: testbench.sv(195): (vlog-2999) Enum literal 'VSUB' width (5) must match enum's width(32).
+** Warning: testbench.sv(195): (vlog-2999) Enum literal 'VMUL' width (5) must match enum's width(32).
+** Warning: testbench.sv(195): (vlog-2999) Enum literal 'VDIV' width (5) must match enum's width(32).
+** Warning: testbench.sv(195): (vlog-2999) Enum literal 'VLDR' width (5) must match enum's width(32).
+** Warning: testbench.sv(195): (vlog-2999) Enum literal 'VSTR' width (5) must match enum's width(32).
 -- Compiling interface core_if
 -- Compiling program test
 -- Compiling module tb_core
@@ -59,12 +67,12 @@ Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 Top level modules:
 	tb_core
 
-} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/decoder.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/decoder.v
+} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/core.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/core.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module decoder
+-- Compiling module core
 
 Top level modules:
-	decoder
+	core
 
 } {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/ALU.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/ALU.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
@@ -73,11 +81,11 @@ Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
 Top level modules:
 	ALU
 
-} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/core.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/TB/core.v
+} {} {}} D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/decoder.v {1 {vlog -work work -vopt -stats=none D:/Voice_Conversion_Project/NPU/cycle_gan_fpga/rtl/core/decoder.v
 Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
--- Compiling module core
+-- Compiling module decoder
 
 Top level modules:
-	core
+	decoder
 
 } {} {}}
